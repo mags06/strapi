@@ -1,0 +1,71 @@
+{
+  "kind": "collectionType",
+  "collectionName": "descuentos",
+  "info": {
+    "singularName": "descuento",
+    "pluralName": "descuentos",
+    "displayName": "Descuento"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "nombre": {
+      "type": "string"
+    },
+    "tipo": {
+      "type": "enumeration",
+      "enum": [
+        "porcentaje",
+        "monto_fijo"
+      ]
+    },
+    "valor": {
+      "type": "decimal"
+    },
+    "fecha_inicio": {
+      "type": "date"
+    },
+    "fecha_fin": {
+      "type": "date"
+    },
+    "activo": {
+      "type": "boolean",
+      "default": true
+    },
+    "aplica_a": {
+      "type": "enumeration",
+      "enum": [
+        "producto",
+        "categoria",
+        "sucursal",
+        "todo"
+      ]
+    },
+    "category": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::category.category",
+      "inversedBy": "descuentos"
+    },
+    "sucursal": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::sucursal.sucursal",
+      "inversedBy": "descuentos"
+    },
+    "product": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::product.product",
+      "inversedBy": "descuentos"
+    },
+    "producto_sucursal": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::producto-sucursal.producto-sucursal",
+      "inversedBy": "descuentos"
+    }
+  }
+}

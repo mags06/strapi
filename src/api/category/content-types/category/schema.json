@@ -11,28 +11,34 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "name": {
-      "type": "string",
-      "required": true
-    },
-    "description": {
-      "type": "string"
-    },
-    "icon": {
-      "type": "media",
-      "multiple": false,
-      "allowedTypes": [
-        "images"
-      ]
-    },
-    "sku": {
-      "type": "uid"
-    },
     "products": {
       "type": "relation",
       "relation": "manyToMany",
       "target": "api::product.product",
       "inversedBy": "categories"
+    },
+    "descuentos": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::descuento.descuento",
+      "mappedBy": "category"
+    },
+    "activ": {
+      "type": "boolean",
+      "default": true
+    },
+    "description": {
+      "type": "string"
+    },
+    "icono": {
+      "type": "string"
+    },
+    "sku": {
+      "type": "uid"
+    },
+    "name": {
+      "type": "string",
+      "required": true
     }
   }
 }

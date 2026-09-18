@@ -1,0 +1,43 @@
+{
+  "kind": "collectionType",
+  "collectionName": "producto_sucursals",
+  "info": {
+    "singularName": "producto-sucursal",
+    "pluralName": "producto-sucursals",
+    "displayName": "Producto_Sucursal"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "product": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::product.product",
+      "inversedBy": "producto_sucursales"
+    },
+    "sucursal": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::sucursal.sucursal",
+      "inversedBy": "producto_sucursales"
+    },
+    "precio_lista": {
+      "type": "decimal"
+    },
+    "precio_descuento": {
+      "type": "decimal"
+    },
+    "disponible": {
+      "type": "boolean",
+      "default": true
+    },
+    "descuentos": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::descuento.descuento",
+      "mappedBy": "producto_sucursal"
+    }
+  }
+}

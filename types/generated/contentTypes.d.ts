@@ -454,11 +454,16 @@ export interface ApiCategoryCategory extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    activ: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     description: Schema.Attribute.String;
-    icon: Schema.Attribute.Media<'images'>;
+    descuentos: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::descuento.descuento'
+    >;
+    icono: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -472,6 +477,49 @@ export interface ApiCategoryCategory extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+  };
+}
+
+export interface ApiDescuentoDescuento extends Struct.CollectionTypeSchema {
+  collectionName: 'descuentos';
+  info: {
+    displayName: 'Descuento';
+    pluralName: 'descuentos';
+    singularName: 'descuento';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    activo: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    aplica_a: Schema.Attribute.Enumeration<
+      ['producto', 'categoria', 'sucursal', 'todo']
+    >;
+    category: Schema.Attribute.Relation<'manyToOne', 'api::category.category'>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    fecha_fin: Schema.Attribute.Date;
+    fecha_inicio: Schema.Attribute.Date;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::descuento.descuento'
+    > &
+      Schema.Attribute.Private;
+    nombre: Schema.Attribute.String;
+    product: Schema.Attribute.Relation<'manyToOne', 'api::product.product'>;
+    producto_sucursal: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::producto-sucursal.producto-sucursal'
+    >;
+    publishedAt: Schema.Attribute.DateTime;
+    sucursal: Schema.Attribute.Relation<'manyToOne', 'api::sucursal.sucursal'>;
+    tipo: Schema.Attribute.Enumeration<['porcentaje', 'monto_fijo']>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    valor: Schema.Attribute.Decimal;
   };
 }
 
@@ -493,25 +541,106 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    description: Schema.Attribute.Blocks;
-    discounted_price: Schema.Attribute.Decimal;
+    descripcion: Schema.Attribute.Blocks;
+    descuentos: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::descuento.descuento'
+    >;
     gallery: Schema.Attribute.Media<'images', true>;
     image: Schema.Attribute.Media<'images'>;
-    list_price: Schema.Attribute.Decimal;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::product.product'
     > &
       Schema.Attribute.Private;
-    publishedAt: Schema.Attribute.DateTime;
-    sku: Schema.Attribute.UID;
-    title: Schema.Attribute.String &
+    nombre: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 50;
         minLength: 5;
       }>;
+    producto_sucursales: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::producto-sucursal.producto-sucursal'
+    >;
+    publishedAt: Schema.Attribute.DateTime;
+    sku: Schema.Attribute.UID;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiProductoSucursalProductoSucursal
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'producto_sucursals';
+  info: {
+    displayName: 'Producto_Sucursal';
+    pluralName: 'producto-sucursals';
+    singularName: 'producto-sucursal';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    descuentos: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::descuento.descuento'
+    >;
+    disponible: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::producto-sucursal.producto-sucursal'
+    > &
+      Schema.Attribute.Private;
+    precio_descuento: Schema.Attribute.Decimal;
+    precio_lista: Schema.Attribute.Decimal;
+    product: Schema.Attribute.Relation<'manyToOne', 'api::product.product'>;
+    publishedAt: Schema.Attribute.DateTime;
+    sucursal: Schema.Attribute.Relation<'manyToOne', 'api::sucursal.sucursal'>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiSucursalSucursal extends Struct.CollectionTypeSchema {
+  collectionName: 'sucursals';
+  info: {
+    displayName: 'Sucursal';
+    pluralName: 'sucursals';
+    singularName: 'sucursal';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    ciudad: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    descuentos: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::descuento.descuento'
+    >;
+    direccion: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::sucursal.sucursal'
+    > &
+      Schema.Attribute.Private;
+    nombre: Schema.Attribute.String & Schema.Attribute.Required;
+    producto_sucursales: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::producto-sucursal.producto-sucursal'
+    >;
+    publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1030,7 +1159,10 @@ declare module '@strapi/strapi' {
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
       'api::category.category': ApiCategoryCategory;
+      'api::descuento.descuento': ApiDescuentoDescuento;
       'api::product.product': ApiProductProduct;
+      'api::producto-sucursal.producto-sucursal': ApiProductoSucursalProductoSucursal;
+      'api::sucursal.sucursal': ApiSucursalSucursal;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;

@@ -11,21 +11,11 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "title": {
-      "type": "string",
-      "minLength": 5,
-      "maxLength": 50,
-      "required": true,
-      "unique": false
+    "sku": {
+      "type": "uid"
     },
-    "description": {
+    "descripcion": {
       "type": "blocks"
-    },
-    "list_price": {
-      "type": "decimal"
-    },
-    "discounted_price": {
-      "type": "decimal"
     },
     "image": {
       "type": "media",
@@ -41,14 +31,30 @@
         "images"
       ]
     },
-    "sku": {
-      "type": "uid"
-    },
     "categories": {
       "type": "relation",
       "relation": "manyToMany",
       "target": "api::category.category",
       "mappedBy": "products"
+    },
+    "producto_sucursales": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::producto-sucursal.producto-sucursal",
+      "mappedBy": "product"
+    },
+    "descuentos": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::descuento.descuento",
+      "mappedBy": "product"
+    },
+    "nombre": {
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 50,
+      "required": true,
+      "unique": false
     }
   }
 }
